@@ -149,16 +149,13 @@ export default function Home() {
         <div className="hero-bg">
           <div className="hero-glitch-container">
             <picture>
-              <source media="(max-width: 768px)" srcSet="/images/band/responsivehero.jpg" />
-              <img className="hero-glitch__base" src="/images/band/hero.png" alt="Velocity" />
+              <img className="hero-glitch__base" src="/images/band/hero3.jpg" alt="Velocity" />
             </picture>
             <picture>
-              <source media="(max-width: 768px)" srcSet="/images/band/responsivehero.jpg" />
-              <img ref={redRef} className="hero-glitch__red" src="/images/band/hero.png" alt="" aria-hidden="true" />
+              <img ref={redRef} className="hero-glitch__red" src="/images/band/hero3.jpg" alt="" aria-hidden="true" />
             </picture>
             <picture>
-              <source media="(max-width: 768px)" srcSet="/images/band/responsivehero.jpg" />
-              <img ref={blueRef} className="hero-glitch__blue" src="/images/band/hero.png" alt="" aria-hidden="true" />
+              <img ref={blueRef} className="hero-glitch__blue" src="/images/band/hero3.jpg" alt="" aria-hidden="true" />
             </picture>
             <div ref={noiseRef} className="hero-glitch__noise" />
           </div>

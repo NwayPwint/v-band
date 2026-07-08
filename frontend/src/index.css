@@ -783,7 +783,7 @@ tr:hover td {
 
 .hero-section {
   position: relative;
-  height: 100vh;
+  height: 100dvh;
   min-height: 600px;
   display: flex;
   align-items: center;
@@ -1983,6 +1983,10 @@ tr:hover td {
     text-align: center;
   }
 
+  .hero-glitch-container img {
+    object-position: center 30%;
+  }
+
   .hero-content {
     padding: 0 2rem;
     display: flex;
@@ -2184,6 +2188,10 @@ tr:hover td {
 
   .hero-content {
     padding: 2rem 1rem 0;
+  }
+
+  .hero-glitch-container img {
+    object-position: center 25%;
   }
 
   .hero-title {
