@@ -13,7 +13,7 @@ export const songController = {
 
   async getById(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id);
+      const id = parseInt(req.params.id as string);
       const song = await songService.getById(id);
       if (!song) {
         return res.status(404).json({ error: "Song not found" });
@@ -35,7 +35,7 @@ export const songController = {
 
   async update(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id);
+      const id = parseInt(req.params.id as string);
       const song = await songService.update(id, req.body);
       res.json(song);
     } catch (error) {
@@ -45,7 +45,7 @@ export const songController = {
 
   async delete(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id);
+      const id = parseInt(req.params.id as string);
       await songService.softDelete(id);
       res.status(204).send();
     } catch (error) {

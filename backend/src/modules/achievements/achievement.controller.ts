@@ -13,7 +13,7 @@ export const achievementController = {
 
   async getById(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id);
+      const id = parseInt(req.params.id as string);
       const achievement = await achievementService.getById(id);
       if (!achievement) {
         return res.status(404).json({ error: "Achievement not found" });
@@ -35,7 +35,7 @@ export const achievementController = {
 
   async update(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id);
+      const id = parseInt(req.params.id as string);
       const achievement = await achievementService.update(id, req.body);
       res.json(achievement);
     } catch (error) {
@@ -45,7 +45,7 @@ export const achievementController = {
 
   async delete(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id);
+      const id = parseInt(req.params.id as string);
       await achievementService.softDelete(id);
       res.status(204).send();
     } catch (error) {

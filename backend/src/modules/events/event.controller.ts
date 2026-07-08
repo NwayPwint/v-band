@@ -13,7 +13,7 @@ export const eventController = {
 
   async getById(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id);
+      const id = parseInt(req.params.id as string);
       const event = await eventService.getById(id);
       if (!event) {
         return res.status(404).json({ error: "Event not found" });
@@ -35,7 +35,7 @@ export const eventController = {
 
   async update(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id);
+      const id = parseInt(req.params.id as string);
       const event = await eventService.update(id, req.body);
       res.json(event);
     } catch (error) {
@@ -45,7 +45,7 @@ export const eventController = {
 
   async delete(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id);
+      const id = parseInt(req.params.id as string);
       await eventService.softDelete(id);
       res.status(204).send();
     } catch (error) {
