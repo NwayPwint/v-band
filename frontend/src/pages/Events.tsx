@@ -5,7 +5,16 @@ export default function Events() {
   const [events, setEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
-  const [form, setForm] = useState({ title: "", event_date: "", venue: "", ticket_url: "" });
+  const [form, setForm] = useState<Omit<Event, "id">>({
+    title: "",
+    event_date: "",
+    venue: "",
+    event_type: "Concert",
+    notes: null,
+    link: null,
+    image: null,
+    ticket_url: null,
+  });
 
   useEffect(() => {
     loadEvents();
@@ -25,7 +34,16 @@ export default function Events() {
     }
     setShowModal(false);
     setEditingEvent(null);
-    setForm({ title: "", event_date: "", venue: "", ticket_url: "" });
+    setForm({
+      title: "",
+      event_date: "",
+      venue: "",
+      event_type: "Concert",
+      notes: null,
+      link: null,
+      image: null,
+      ticket_url: null,
+    });
     loadEvents();
   };
 
@@ -35,7 +53,11 @@ export default function Events() {
       title: event.title,
       event_date: event.event_date.split("T")[0],
       venue: event.venue,
-      ticket_url: event.ticket_url || "",
+      event_type: event.event_type,
+      notes: event.notes,
+      link: event.link,
+      image: event.image,
+      ticket_url: event.ticket_url,
     });
     setShowModal(true);
   };
@@ -64,7 +86,16 @@ export default function Events() {
           className="btn btn-primary"
           onClick={() => {
             setEditingEvent(null);
-            setForm({ title: "", event_date: "", venue: "", ticket_url: "" });
+            setForm({
+              title: "",
+              event_date: "",
+              venue: "",
+              event_type: "Concert",
+              notes: null,
+              link: null,
+              image: null,
+              ticket_url: null,
+            });
             setShowModal(true);
           }}
         >
