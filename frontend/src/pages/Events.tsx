@@ -189,8 +189,8 @@ export default function Events() {
                 <label>Ticket URL</label>
                 <input
                   type="text"
-                  value={form.ticket_url}
-                  onChange={(e) => setForm({ ...form, ticket_url: e.target.value })}
+                  value={form.ticket_url ?? ""}
+                  onChange={(e) => setForm({ ...form, ticket_url: e.target.value || null })}
                 />
               </div>
               <div className="form-actions">
