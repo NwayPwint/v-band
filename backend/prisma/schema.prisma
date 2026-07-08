@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Song {
+  id           Int       @id @default(autoincrement())
+  title        String
+  release_date DateTime
+  url          String
+  cover_image  String
+  type         String    @default("Single")
+  is_latest    Boolean   @default(false)
+  deleted_at   DateTime?
+
+  @@map("songs")
+}
+
+model Event {
+  id          Int       @id @default(autoincrement())
+  title       String
+  event_date  DateTime
+  venue       String
+  event_type  String    @default("Concert")
+  notes       String?
+  link        String?
+  image       String?
+  ticket_url  String?
+  deleted_at  DateTime?
+
+  @@map("events")
+}
+
+model Achievement {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  icon        String?
+  year        Int?
+  deleted_at  DateTime?
+
+  @@map("achievements")
+}
+
+model Member {
+  id          Int       @id @default(autoincrement())
+  name        String
+  role        String
+  image_url   String
+  deleted_at  DateTime?
+  social_url  String
+
+  @@map("members")
+}
