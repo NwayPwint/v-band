@@ -527,6 +527,8 @@ tr:hover td {
 .nav-logo img {
   height: 40px;
   display: block;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
 .nav-links {
@@ -2137,6 +2139,7 @@ tr:hover td {
 
   .about-hero {
     padding: 8rem 0 4rem;
+    min-height: 50vh;
   }
 
   .about-hero-title {
@@ -2165,6 +2168,11 @@ tr:hover td {
 
   .about-fact-value {
     font-size: 1rem;
+  }
+
+  .section-title::before,
+  .section-title::after {
+    width: 20px;
   }
 
   .sidebar {
@@ -2225,6 +2233,7 @@ tr:hover td {
 
   .about-hero {
     padding: 6rem 0 3rem;
+    min-height: 40vh;
   }
 
   .about-hero-title {
@@ -2253,6 +2262,11 @@ tr:hover td {
 
   .about-fact-value {
     font-size: 0.95rem;
+  }
+
+  .section-title::before,
+  .section-title::after {
+    display: none;
   }
 
   .members-grid {
