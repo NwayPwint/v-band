@@ -5,7 +5,14 @@ export default function Songs() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [editingSong, setEditingSong] = useState<Song | null>(null);
-  const [form, setForm] = useState({ title: "", release_date: "", url: "", cover_image: "", type: "Single", is_latest: false });
+  const [form, setForm] = useState({ title: "", release_date: "", url: "", spotify_url: "", type: "Single", is_latest: false });
+
+  function getYTThumbnail(url: string): string {
+    const match = url.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/
+    );
+    return match ? `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg` : "";
+  }
 
   useEffect(() => {
     loadSongs();
@@ -18,14 +25,15 @@ export default function Songs() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const payload = { ...form, cover_image: getYTThumbnail(form.url) };
     if (editingSong) {
-      await songApi.update(editingSong.id, form);
+      await songApi.update(editingSong.id, payload);
     } else {
-      await songApi.create(form);
+      await songApi.create(payload);
     }
     setShowModal(false);
     setEditingSong(null);
-    setForm({ title: "", release_date: "", url: "", cover_image: "", type: "Single", is_latest: false });
+    setForm({ title: "", release_date: "", url: "", spotify_url: "", type: "Single", is_latest: false });
     loadSongs();
   };
 
@@ -35,7 +43,7 @@ export default function Songs() {
       title: song.title,
       release_date: song.release_date.split("T")[0],
       url: song.url,
-      cover_image: song.cover_image,
+      spotify_url: song.spotify_url || "",
       type: song.type,
       is_latest: song.is_latest,
     });
@@ -65,7 +73,7 @@ export default function Songs() {
           className="btn btn-primary"
           onClick={() => {
             setEditingSong(null);
-            setForm({ title: "", release_date: "", url: "", cover_image: "", type: "Single", is_latest: false });
+            setForm({ title: "", release_date: "", url: "", spotify_url: "", type: "Single", is_latest: false });
             setShowModal(true);
           }}
         >
@@ -157,7 +165,7 @@ export default function Songs() {
                 />
               </div>
               <div className="form-group">
-                <label>URL</label>
+                <label>YouTube URL</label>
                 <input
                   type="text"
                   value={form.url}
@@ -166,12 +174,12 @@ export default function Songs() {
                 />
               </div>
               <div className="form-group">
-                <label>Cover Image URL</label>
+                <label>Spotify URL <span style={{ opacity: 0.5, fontWeight: 400 }}>(optional)</span></label>
                 <input
                   type="text"
-                  value={form.cover_image}
-                  onChange={(e) => setForm({ ...form, cover_image: e.target.value })}
-                  required
+                  value={form.spotify_url}
+                  onChange={(e) => setForm({ ...form, spotify_url: e.target.value })}
+                  placeholder="https://open.spotify.com/track/..."
                 />
               </div>
               <div className="form-group">

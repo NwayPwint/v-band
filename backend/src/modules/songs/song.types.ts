@@ -5,6 +5,7 @@ export interface CreateSongDto {
   cover_image: string;
   type: string;
   is_latest?: boolean;
+  spotify_url?: string;
 }
 
 export interface UpdateSongDto {
@@ -14,6 +15,7 @@ export interface UpdateSongDto {
   cover_image?: string;
   type?: string;
   is_latest?: boolean;
+  spotify_url?: string;
 }
 
 export interface SongResponse {
@@ -24,4 +26,5 @@ export interface SongResponse {
   cover_image: string;
   type: string;
   is_latest: boolean;
+  spotify_url: string | null;
 }

@@ -33,13 +33,6 @@ export default function Tour() {
 
   return (
     <>
-      <section className="page-hero">
-        <div className="section-container">
-          <span className="section-label">Live Shows</span>
-          <h1 className="page-hero-title">Tour Dates</h1>
-        </div>
-      </section>
-
       <section className="section">
         <div className="section-container">
           <span className="section-label">Upcoming</span>

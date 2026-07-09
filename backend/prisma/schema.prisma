@@ -16,6 +16,7 @@ model Song {
   cover_image  String
   type         String    @default("Single")
   is_latest    Boolean   @default(false)
+  spotify_url  String?
   deleted_at   DateTime?
 
   @@map("songs")

@@ -10,24 +10,33 @@ const QUICK_FACTS = [
   { label: "Founded", value: "2010 (Yangon, Myanmar)" },
   { label: "Genre", value: "Progressive Metal / Alternative Rock" },
   { label: "Breakthrough Track", value: "Metamorphosis" },
-  { label: "Major Global Appearance", value: "2026 ROUND Music Festival (Philippines)" },
+  {
+    label: "Major Global Appearance",
+    value: "2026 ROUND Music Festival (Philippines)",
+  },
 ];
 
 export default function About() {
   return (
     <>
       {/* SECTION 1: HERO */}
-      <section className="about-hero">
+      <section className="section section-dark">
         <div className="section-container">
           <span className="section-label">The Identity</span>
-          <h1 className="about-hero-title">Unconventional. Technical. Uncompromising.</h1>
-          <p className="about-hero-sub">The Voice of Modern Myanmar Progressive Metal.</p>
+          <h1 className="section-title">
+            Unconventional. Technical. Uncompromising.
+          </h1>
+          <p className="about-hero-sub">
+            The Voice of Modern Myanmar Progressive Metal.
+          </p>
           <p className="about-hero-body">
-            Hailing from the heart of Yangon, Myanmar, Velocity is a premier heavy-music powerhouse pushing the
-            boundaries of regional rock and metal. Established in 2010, the band has spent over a decade dismantling
-            traditional musical structures to craft a sonic identity defined by intricate polyrhythms, complex guitar
-            work, and relentless double-bass drumming. Velocity is more than a band—it is an ever-evolving musical
-            experiment.
+            Hailing from the heart of Yangon, Myanmar, Velocity is a premier
+            heavy-music powerhouse pushing the boundaries of regional rock and
+            metal. Established in 2010, the band has spent over a decade
+            dismantling traditional musical structures to craft a sonic identity
+            defined by intricate polyrhythms, complex guitar work, and
+            relentless double-bass drumming. Velocity is more than a band—it is
+            an ever-evolving musical experiment.
           </p>
         </div>
       </section>
@@ -43,16 +52,20 @@ export default function About() {
           <h2 className="section-title">The Journey of Sound</h2>
           <div className="about-text-block">
             <p>
-              Velocity exploded onto the mainstream landscape with their 2019 debut studio album,{" "}
-              <strong>&ldquo;Way&rdquo;</strong>, which shattered expectations and ranked 10th on Myanmar&rsquo;s Top
-              10 Best Seller Albums list. Known for balancing technical proficiency with raw emotional narratives, they
-              became pioneers in the modern local alternative and hard rock movements.
+              Velocity exploded onto the mainstream landscape with their 2019
+              debut studio album, <strong>&ldquo;Way&rdquo;</strong>, which
+              shattered expectations and ranked 10th on Myanmar&rsquo;s Top 10
+              Best Seller Albums list. Known for balancing technical proficiency
+              with raw emotional narratives, they became pioneers in the modern
+              local alternative and hard rock movements.
             </p>
             <p>
-              Rather than sticking to a formula, Velocity consistently transforms. This constant evolution culminated
-              in a defining new era with the arrival of frontman <strong>RaNo</strong>, whose versatile vocal
-              range&mdash;seamlessly shifting between clean, haunting melodies and raw metal distortion&mdash;injected
-              a blistering new energy into the band&rsquo;s catalog.
+              Rather than sticking to a formula, Velocity consistently
+              transforms. This constant evolution culminated in a defining new
+              era with the arrival of frontman <strong>RaNo</strong>, whose
+              versatile vocal range&mdash;seamlessly shifting between clean,
+              haunting melodies and raw metal distortion&mdash;injected a
+              blistering new energy into the band&rsquo;s catalog.
             </p>
           </div>
         </div>
@@ -60,7 +73,7 @@ export default function About() {
 
       <div className="section-divider">
         <span className="v-line"></span>
-        
+
         <span className="v-line"></span>
       </div>
 
@@ -68,20 +81,28 @@ export default function About() {
       <section className="section">
         <div className="section-container">
           <span className="section-label">Milestones</span>
-          <h2 className="section-title">Pushing Boundaries, Crossing Borders</h2>
+          <h2 className="section-title">
+            Pushing Boundaries, Crossing Borders
+          </h2>
           <div className="about-text-block">
             <p>
-              Velocity&rsquo;s artistry thrives on the philosophy of original creation over standard imitation. From
-              the haunting acoustic reimagining of their heavy discography in the 2025 release{" "}
-              <strong>&ldquo;Acoustic Frequency&rdquo;</strong>, to the viral emotional resonance of their 2026 tribute
-              single <strong>&ldquo;ရုတ်တရက်&rdquo; (Yoke Ta Yet)</strong>, the band writes with a heavy narrative
-              purpose.
+              Velocity&rsquo;s artistry thrives on the philosophy of original
+              creation over standard imitation. From the haunting acoustic
+              reimagining of their heavy discography in the 2025 release{" "}
+              <strong>&ldquo;ic Frequency&rdquo;</strong>, to the viral
+              emotional resonance of their 2026 tribute single{" "}
+              <strong>&ldquo;ရုတ်တရက်&rdquo; (Yoke Ta Yet)</strong>, the band
+              writes with a heavy narrative purpose.
             </p>
             <p>
-              Their boundary-pushing sound has caught international attention. Velocity proudly represented
-              contemporary Myanmar metal on the global stage at the prestigious{" "}
-              <strong>2026 ROUND Music Festival (ASEAN-Korea Music Festival)</strong> at the Araneta Coliseum in the
-              Philippines, proving that their intricate sonic landscapes hold an undeniable universal appeal.
+              Their boundary-pushing sound has caught international attention.
+              Velocity proudly represented contemporary Myanmar metal on the
+              global stage at the prestigious{" "}
+              <strong>
+                2026 ROUND Music Festival (ASEAN-Korea Music Festival)
+              </strong>{" "}
+              at the Araneta Coliseum in the Philippines, proving that their
+              intricate sonic landscapes hold an undeniable universal appeal.
             </p>
           </div>
         </div>
@@ -89,7 +110,7 @@ export default function About() {
 
       <div className="section-divider">
         <span className="v-line"></span>
-        
+
         <span className="v-line"></span>
       </div>
 
@@ -111,7 +132,7 @@ export default function About() {
 
       <div className="section-divider">
         <span className="v-line"></span>
-        
+
         <span className="v-line"></span>
       </div>
 

@@ -20,6 +20,7 @@ export interface Song {
   cover_image: string;
   type: string;
   is_latest: boolean;
+  spotify_url: string | null;
 }
 
 export interface Achievement {
