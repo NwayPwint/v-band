@@ -1,9 +1,105 @@
+import { useState, useEffect } from "react";
+import GalleryLightbox from "../../components/GalleryLightbox";
+import SocialIcon from "../../components/SocialIcon";
+import { interviewApi, Interview } from "../../services/api";
+
 const LINEUP = [
-  { name: "RaNo", role: "Lead Vocals" },
-  { name: "Tun Thu", role: "Guitars & Backing Vocals" },
-  { name: "Aung Thu", role: "Drums & Backing Vocals" },
-  { name: "Chris Chen", role: "Keyboards" },
-  { name: "Pyae Wa", role: "Bass Guitar" },
+  {
+    name: "RaNo",
+    role: "Lead Vocals",
+    image: "/images/members/rano.jpg",
+    images: [
+      "/images/members/rano.jpg",
+      "/images/members/rano-2.jpg",
+      "/images/members/rano-3.jpg",
+      "/images/members/rano-4.jpg",
+      "/images/members/rano-5.jpg",
+    ],
+    birthday: "September 22",
+    bio: "RaNo (ရာနို) is a powerhouse vocalist, lyricist, and dynamic frontman who has rapidly risen to prominence within Myanmar's modern rock and alternative metal scene. Known for his incredible vocal range, intense emotional delivery, and commanding stage presence, he recently ushered in an exciting new era for Velocity as their main vocalist. Beyond his roaring vocals, RaNo is deeply dedicated to the craft of songwriting and continuous musical growth — a creative philosophy that helped shape hard-hitting projects like \"METAMORPHOSIS\". His artistry has propelled the band onto prestigious international stages, including the ROUND ASEAN-Korea Music Festival. He was formerly the vocalist of Divine Negative.",
+    socials: [
+      { platform: "Facebook", url: "https://www.facebook.com/share/18wSbUASyi/" },
+      { platform: "Instagram", url: "https://www.instagram.com/hlyanhtet1662019?igsh=NjB2Mzk0eHhwamN3" },
+      { platform: "Divine Negative", url: "https://www.youtube.com/@DivineNegativeOfficial" },
+    ],
+  },
+  {
+    name: "Tun Thu",
+    role: "Guitars & Backing Vocals",
+    image: "/images/members/tunthu.jpg",
+    images: [
+      "/images/members/tunthu.jpg",
+      "/images/members/tunthu-2.jpg",
+      "/images/members/tunthu-3.jpg",
+      "/images/members/tunthu-4.jpg",
+      "/images/members/tunthu-5.jpg",
+    ],
+    birthday: "December 25",
+    bio: "Tun Thu is the lead guitarist, backing vocalist, and one of the core founding members of Velocity. Since the band's inception around 2010, he has been the primary architectural force behind its musical direction — widely recognized for complex, technical guitar work, ambient instrumentation, and unconventional progressive metal song structures. Beyond the stage, he hosts theLAB — a podcast contributing to the Myanmar Music Industry through conversations with industry professionals.",
+    socials: [
+      { platform: "Facebook", url: "https://www.facebook.com/share/1EGWxa87Wi/" },
+      { platform: "Instagram", url: "https://www.instagram.com/tunthu_velocity?igsh=Nzhia3p3M3AxOGx0" },
+      { platform: "theLAB", url: "https://www.youtube.com/@theLAB_mm" },
+    ],
+  },
+  {
+    name: "Aung Thu",
+    role: "Drums & Backing Vocals",
+    image: "/images/members/aungthu.jpg",
+    images: [
+      "/images/members/aungthu.jpg",
+      "/images/members/aungthu-2.jpg",
+      "/images/members/aungthu-3.jpg",
+      "/images/members/aungthu-4.jpg",
+      "/images/members/aungthu-5.jpg",
+    ],
+    birthday: "July 10",
+    bio: "Aung Thu is the powerhouse drummer and a key founding pillar of Velocity. Instrumental to the band's driving rhythm section, he is widely respected for his high-speed double-bass drumming, lightning-fast blast beats, and mastery over complex, shifting time signatures. His relentless energy gives Velocity its heavy, progressive-metal edge. A dedicated gear enthusiast and music producer, he is an official endorsing artist for Centent Cymbals and runs Atlas Tune — his personal YouTube channel sharing his creative passions and behind-the-scenes content.",
+    socials: [
+      { platform: "Facebook", url: "https://www.facebook.com/share/17fQP7herB/" },
+      { platform: "Instagram", url: "https://www.instagram.com/aung.thu15?igsh=ZG5oNm52cHJ2NDZ4" },
+      { platform: "Atlas Tune", url: "https://www.youtube.com/@Aung_Thu" },
+    ],
+  },
+  {
+    name: "Chris Chen",
+    role: "Keyboards",
+    image: "/images/members/chrischen.png",
+    images: [
+      "/images/members/chrischen.png",
+      "/images/members/chrischen-2.png",
+      "/images/members/chrischen-3.png",
+      "/images/members/chrischen-4.png",
+      "/images/members/chrischen-5.png",
+    ],
+    birthday: "April 10",
+    bio: "Chris Chen is the keyboardist and synthesizer player who crafts the deep, atmospheric layers for Velocity. He is the primary force behind the band's cinematic soundscapes — blending symphonic textures, ambient keyboards, and electronic synths into their heavy guitar riffs. Beyond Velocity, Chris is an active audio engineer and producer, exploring individual projects including electronic tracks like \"STEPPEFIRE\" and \"Eain\". His technical mastery adds a sophisticated, futuristic dimension to the band's sound.",
+    socials: [
+      { platform: "Facebook", url: "https://www.facebook.com/share/1JPjABT58w/" },
+      { platform: "Instagram", url: "https://www.instagram.com/chrischen_keys?igsh=MTh3OGZhMmRibGN1dA==" },
+      { platform: "YouTube", url: "https://www.youtube.com/@ChrisChen-b6i" },
+    ],
+  },
+  {
+    name: "Pyae Wa",
+    role: "Bass Guitar",
+    image: "/images/members/pyaewa.jpg",
+    images: [
+      "/images/members/pyaewa.jpg",
+      "/images/members/pyaewa-2.jpg",
+      "/images/members/pyaewa-3.jpg",
+      "/images/members/pyaewa-4.jpg",
+      "/images/members/pyaewa-5.jpg",
+    ],
+    birthday: "October 6",
+    bio: "Pyae Wa (ပြည့်ဝ) is a prominent guitarist and a long-standing member of Velocity, playing a vital role in shaping the band's heavy sonic identity. He crafts the intricate riffs and melodic progressions that define Velocity's signature modern metal sound. Beyond Velocity, Pyae Wa is the frontman of Break The Curse — a Myanmar metal band playing Metal-core, Industrial Metal, Nu-Metal, Electronic Metal, Heavy Metal and Modern Rock.",
+    socials: [
+      { platform: "Facebook", url: "https://www.facebook.com/share/1E8C2dC7xn/" },
+      { platform: "Instagram", url: "https://www.instagram.com/tunthu_velocity?igsh=Nzhia3p3M3AxOGx0" },
+      { platform: "YouTube", url: "https://www.youtube.com/@pyaewa9695" },
+      { platform: "Break The Curse", url: "https://www.youtube.com/@BreakTheCurseMM" },
+    ],
+  },
 ];
 
 const QUICK_FACTS = [
@@ -17,10 +113,25 @@ const QUICK_FACTS = [
 ];
 
 export default function About() {
+  const [gallery, setGallery] = useState<{ images: string[]; name: string } | null>(null);
+  const [interviews, setInterviews] = useState<Interview[]>([]);
+
+  useEffect(() => {
+    interviewApi.getAll().then((res) => setInterviews(res.data));
+  }, []);
+
   return (
     <>
+      {gallery && (
+        <GalleryLightbox
+          images={gallery.images}
+          name={gallery.name}
+          onClose={() => setGallery(null)}
+        />
+      )}
+
       {/* SECTION 1: HERO */}
-      <section className="section section-dark">
+      <section className="about-hero section-dark">
         <div className="section-container">
           <span className="section-label">The Identity</span>
           <h1 className="section-title">
@@ -121,9 +232,29 @@ export default function About() {
           <h2 className="section-title">The Lineup</h2>
           <div className="about-lineup">
             {LINEUP.map((member, i) => (
-              <div className="about-lineup-item" key={i}>
-                <span className="about-lineup-name">{member.name}</span>
-                <span className="about-lineup-role">{member.role}</span>
+              <div className="about-member-card" key={i}>
+                <div
+                  className="about-member-img"
+                  onClick={() => setGallery({ images: member.images, name: member.name })}
+                >
+                  <img src={member.image} alt={member.name} />
+                </div>
+                <div className="about-member-info">
+                  <span className="about-member-name">{member.name}</span>
+                  <span className="about-member-role">{member.role}</span>
+                  <span className="about-member-birthday">Birthday: {member.birthday}</span>
+                  <p className="about-member-bio">{member.bio}</p>
+                  {member.socials && (
+                    <div className="about-member-socials">
+                      {member.socials.map((s, j) => (
+                        <a key={j} href={s.url} target="_blank" rel="noopener noreferrer">
+                          <SocialIcon platform={s.platform} />
+                          {s.platform}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -136,7 +267,49 @@ export default function About() {
         <span className="v-line"></span>
       </div>
 
-      {/* SECTION 5: QUICK FACTS */}
+      {/* SECTION 5: INTERVIEWS */}
+      <section className="section">
+        <div className="section-container">
+          <span className="section-label">Press</span>
+          <h2 className="section-title">Interviews</h2>
+          <div className="about-facts">
+            {interviews.length === 0 ? (
+              <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+                No interviews added yet.
+              </p>
+            ) : (
+              interviews.map((item) => (
+                <a
+                  key={item.id}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about-fact-card"
+                  style={{ textDecoration: "none", cursor: "pointer" }}
+                >
+                  <span className="about-fact-label">{item.source}</span>
+                  <span className="about-fact-value" style={{ marginTop: "0.25rem" }}>
+                    {item.title}
+                  </span>
+                  {item.date && (
+                    <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
+                      {new Date(item.date).toLocaleDateString()}
+                    </span>
+                  )}
+                </a>
+              ))
+            )}
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider">
+        <span className="v-line"></span>
+
+        <span className="v-line"></span>
+      </div>
+
+      {/* SECTION 6: QUICK FACTS */}
       <section className="section">
         <div className="section-container">
           <span className="section-label">Data</span>

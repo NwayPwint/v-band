@@ -876,29 +876,6 @@ tr:hover td {
   bottom: 0;
   z-index: 3;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    black 0%,
-    transparent 10%,
-    transparent 90%,
-    black 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    black 0%,
-    transparent 10%,
-    transparent 90%,
-    black 100%
-  );
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
-  background: linear-gradient(
-    to right,
-    rgba(5, 5, 8, 0.35) 0%,
-    transparent 15%,
-    transparent 85%,
-    rgba(5, 5, 8, 0.35) 100%
-  );
 }
 
 .hero-bg {
@@ -987,7 +964,7 @@ tr:hover td {
 .hero-bg video {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .hero-speed-lines {
@@ -2406,6 +2383,7 @@ tr:hover td {
   .page-hero {
     padding: 8rem 0 4rem;
     min-height: 30vh;
+    background-size: auto 100%;
   }
 
   .page-hero-title {
@@ -2659,12 +2637,18 @@ tr:hover td {
    ======================== */
 
 .page-hero {
-  padding: 12rem 0 6rem;
+  padding: 22rem 0 6rem;
   min-height: 40vh;
   display: flex;
+  margin-top: 90px;
   align-items: center;
   position: relative;
   background-color: var(--bg-secondary);
+  background-image: url("/images/band/hero.png");
+  background-size: cover;
+  background-position: center 30%;
+  background-repeat: no-repeat;
+  overflow: hidden;
 }
 
 .page-hero::before {
@@ -2674,10 +2658,45 @@ tr:hover td {
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 1;
+  pointer-events: none;
   background:
     linear-gradient(rgba(255, 0, 64, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(var(--bg-primary) 0%, transparent 6rem),
+    linear-gradient(rgba(5, 5, 8, 0.45), rgba(5, 5, 8, 0.45));
+  background-size:
+    40px 40px,
+    40px 40px,
+    auto,
+    auto;
+  background-repeat: repeat, repeat, no-repeat, no-repeat;
+}
+
+.page-hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 6rem;
+  background: linear-gradient(transparent, var(--bg-primary));
+  z-index: 2;
+  pointer-events: none;
+}
+
+.page-hero .section-container {
+  position: relative;
+  z-index: 3;
+}
+
+.hero-thunder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
 }
 
 .page-hero-title {
@@ -2925,7 +2944,525 @@ tr:hover td {
   color: var(--accent);
 }
 
+/* ========================
+   EXPLORE — MEMBERS SECTION
+   ======================== */
+
+.explore-intro {
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto 3rem;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.explore-members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 2rem;
+}
+
+.explore-member-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+
+.explore-member-card:hover {
+  border-color: rgba(255, 0, 64, 0.3);
+  box-shadow: 0 0 30px rgba(255, 0, 64, 0.06);
+}
+
+.explore-member-img {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.explore-member-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    transform 0.5s ease,
+    filter 0.5s ease;
+}
+
+.explore-member-card:hover .explore-member-img img {
+  transform: scale(1.05);
+}
+
+.explore-member-img::after {
+  content: "View Gallery";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(transparent, rgba(5, 5, 8, 0.85));
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.explore-member-img:hover::after {
+  opacity: 1;
+}
+
+.explore-member-info {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.explore-member-info h3 {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.explore-member-role {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.explore-member-birthday {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+}
+
+.explore-member-bio {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-top: 0.5rem;
+  flex: 1;
+}
+
+.explore-member-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.explore-member-socials a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  text-decoration: none;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.explore-member-socials a:hover {
+  color: var(--accent);
+  border-color: rgba(255, 0, 64, 0.3);
+  background: rgba(255, 0, 64, 0.04);
+}
+
+/* ========================
+   EXPLORE — BAND SOCIALS
+   ======================== */
+
+.explore-band-socials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.explore-band-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: 0;
+  text-decoration: none;
+  transition:
+    border-color 0.3s,
+    background 0.3s,
+    box-shadow 0.3s;
+}
+
+.explore-band-social-link:hover {
+  color: var(--accent);
+  border-color: rgba(255, 0, 64, 0.4);
+  background: rgba(255, 0, 64, 0.05);
+  box-shadow: 0 0 20px rgba(255, 0, 64, 0.08);
+}
+
+/* ========================
+   EXPLORE — INTERVIEWS
+   ======================== */
+
+.explore-interviews-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.explore-interview-card {
+  display: flex;
+  gap: 1.25rem;
+  text-decoration: none;
+  padding: 1.25rem;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.015);
+  transition:
+    border-color 0.3s,
+    background 0.3s;
+}
+
+.explore-interview-card:hover {
+  border-color: rgba(255, 0, 64, 0.25);
+  background: rgba(255, 0, 64, 0.03);
+}
+
+.explore-interview-thumb {
+  flex-shrink: 0;
+  width: 200px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  position: relative;
+}
+
+.explore-interview-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.explore-interview-card:hover .explore-interview-thumb img {
+  transform: scale(1.04);
+}
+
+.explore-interview-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 5, 8, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.explore-interview-card:hover .explore-interview-play {
+  opacity: 1;
+}
+
+.play-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.explore-interview-card:hover .play-icon {
+  transform: scale(1.1);
+}
+
+.explore-interview-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.explore-interview-source {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.explore-interview-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.explore-interview-date {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+/* ========================
+   GALLERY LIGHTBOX
+   ======================== */
+
+.gallery-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(5, 5, 8, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.gallery-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 2rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s;
+  z-index: 1;
+}
+
+.gallery-close:hover {
+  color: var(--accent);
+}
+
+.gallery-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.gallery-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+}
+
+.gallery-content img {
+  width: 100%;
+  max-height: 65vh;
+  object-fit: contain;
+  border: 1px solid var(--border-color);
+}
+
+.gallery-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.gallery-item {
+  width: 160px;
+  height: 100px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  opacity: 0.5;
+  transition:
+    opacity 0.2s,
+    border-color 0.2s;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-item:hover {
+  opacity: 0.8;
+  border-color: rgba(255, 0, 64, 0.4);
+}
+
+.gallery-item.active {
+  opacity: 1;
+  border-color: var(--accent);
+}
+
+/* ========================
+   ABOUT — MEMBER CARDS
+   ======================== */
+
+.about-member-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+
+.about-member-card:hover {
+  border-color: rgba(255, 0, 64, 0.3);
+  box-shadow: 0 0 30px rgba(255, 0, 64, 0.06);
+}
+
+.about-member-img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.about-member-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.about-member-card:hover .about-member-img img {
+  transform: scale(1.05);
+}
+
+.about-member-info {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.about-member-name {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.about-member-role {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.about-member-birthday {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+}
+
+.about-member-bio {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-top: 0.5rem;
+}
+
+.about-member-socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.about-member-socials a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  text-decoration: none;
+  transition:
+    color 0.2s,
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.about-member-socials a:hover {
+  color: var(--accent);
+  border-color: rgba(255, 0, 64, 0.3);
+  background: rgba(255, 0, 64, 0.04);
+}
+
 @media (max-width: 768px) {
+  .explore-interview-card {
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .explore-interview-thumb {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .explore-interview-info {
+    padding: 0 1rem 1rem;
+  }
+
   .achievements-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;

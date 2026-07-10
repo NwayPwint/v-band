@@ -37,6 +37,18 @@ model Event {
   @@map("events")
 }
 
+model Interview {
+  id          Int       @id @default(autoincrement())
+  source      String
+  title       String
+  url         String
+  cover_image String?
+  date        DateTime?
+  deleted_at  DateTime?
+
+  @@map("interviews")
+}
+
 model Achievement {
   id          Int       @id @default(autoincrement())
   title       String

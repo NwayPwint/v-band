@@ -4,6 +4,7 @@ import { memberRoutes } from "./modules/members/member.routes";
 import { songRoutes } from "./modules/songs/song.routes";
 import { eventRoutes } from "./modules/events/event.routes";
 import { achievementRoutes } from "./modules/achievements/achievement.routes";
+import { interviewRoutes } from "./modules/interviews/interview.routes";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -29,6 +30,7 @@ app.use("/api/members", memberRoutes);
 app.use("/api/songs", songRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/achievements", achievementRoutes);
+app.use("/api/interviews", interviewRoutes);
 
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {

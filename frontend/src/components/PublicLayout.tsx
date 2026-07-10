@@ -39,7 +39,7 @@ export default function PublicLayout() {
               <Link to="/tour">Tour</Link>
             </li>
             <li>
-              <Link to="/contact">Contact</Link>
+              <Link to="/members">Members</Link>
             </li>
           </ul>
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
@@ -91,8 +91,8 @@ export default function PublicLayout() {
         <Link to="/tour" onClick={() => setMobileMenuOpen(false)}>
           Tour
         </Link>
-        <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
-          Contact
+        <Link to="/members" onClick={() => setMobileMenuOpen(false)}>
+          Members
         </Link>
       </div>
 
@@ -126,7 +126,7 @@ export default function PublicLayout() {
                 <Link to="/tour">Tour</Link>
               </li>
               <li>
-                <Link to="/contact">Contact</Link>
+              <Link to="/members">Members</Link>
               </li>
             </ul>
           </div>

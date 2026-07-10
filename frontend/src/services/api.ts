@@ -71,6 +71,23 @@ export const adminApi = {
   login: (password: string) => api.post<{ success: boolean }>("/admin/login", { password }),
 };
 
+export interface Interview {
+  id: number;
+  source: string;
+  title: string;
+  url: string;
+  cover_image: string | null;
+  date: string | null;
+}
+
+export const interviewApi = {
+  getAll: () => api.get<Interview[]>("/interviews"),
+  getById: (id: number) => api.get<Interview>(`/interviews/${id}`),
+  create: (data: Omit<Interview, "id">) => api.post<Interview>("/interviews", data),
+  update: (id: number, data: Partial<Interview>) => api.put<Interview>(`/interviews/${id}`, data),
+  delete: (id: number) => api.delete(`/interviews/${id}`),
+};
+
 export const eventApi = {
   getAll: () => api.get<Event[]>("/events"),
   getById: (id: number) => api.get<Event>(`/events/${id}`),

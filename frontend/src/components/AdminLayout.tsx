@@ -40,6 +40,9 @@ export default function AdminLayout() {
           <li>
             <NavLink to="/admin/achievements">Achievements</NavLink>
           </li>
+          <li>
+            <NavLink to="/admin/interviews">Interviews</NavLink>
+          </li>
         </ul>
         <div className="sidebar-footer">
           <button onClick={handleLogout} className="sidebar-logout">Logout</button>
