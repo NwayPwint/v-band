@@ -465,47 +465,49 @@ export default function Members() {
         <div className="section-container">
           <span className="section-label">Press</span>
           <h2 className="section-title">Interviews</h2>
-          {interviews.length === 0 ? (
+        </div>
+        {interviews.length === 0 ? (
+          <div className="section-container">
             <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
               No interviews added yet.
             </p>
-          ) : (
-            <div className="explore-interviews-grid">
-              {interviews.map((item) => {
-                const thumb = item.cover_image || getYTThumbnail(item.url);
-                return (
-                  <a
-                    key={item.id}
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="explore-interview-card"
-                  >
-                    {thumb && (
-                      <div className="explore-interview-thumb">
-                        <img src={thumb} alt={item.title} />
-                        <div className="explore-interview-play">
-                          <div className="play-icon">&#9654;</div>
-                        </div>
+          </div>
+        ) : (
+          <div className="explore-interviews-grid">
+            {interviews.map((item) => {
+              const thumb = item.cover_image || getYTThumbnail(item.url);
+              return (
+                <a
+                  key={item.id}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="explore-interview-card"
+                >
+                  {thumb && (
+                    <div className="explore-interview-thumb">
+                      <img src={thumb} alt={item.title} />
+                      <div className="explore-interview-play">
+                        <div className="play-icon">&#9654;</div>
                       </div>
-                    )}
-                    <div className="explore-interview-info">
-                      <span className="explore-interview-source">
-                        {item.source}
-                      </span>
-                      <h3 className="explore-interview-title">{item.title}</h3>
-                      {item.date && (
-                        <span className="explore-interview-date">
-                          {new Date(item.date).toLocaleDateString()}
-                        </span>
-                      )}
                     </div>
-                  </a>
-                );
-              })}
-            </div>
-          )}
-        </div>
+                  )}
+                  <div className="explore-interview-info">
+                    <span className="explore-interview-source">
+                      {item.source}
+                    </span>
+                    <h3 className="explore-interview-title">{item.title}</h3>
+                    {item.date && (
+                      <span className="explore-interview-date">
+                        {new Date(item.date).toLocaleDateString()}
+                      </span>
+                    )}
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        )}
       </section>
     </>
   );

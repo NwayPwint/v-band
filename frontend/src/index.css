@@ -3141,8 +3141,9 @@ tr:hover td {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
-  max-width: 720px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 2rem;
 }
 
 .explore-interview-card {
