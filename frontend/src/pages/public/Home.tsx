@@ -86,6 +86,9 @@ export default function Home() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [isMuted, setIsMuted] = useState(true);
+  const [videoReady, setVideoReady] = useState(false);
+  const [dataReady, setDataReady] = useState(false);
+  const isReady = videoReady && dataReady;
 
   const baseRef = useRef<HTMLVideoElement>(null);
   const redRef = useRef<HTMLVideoElement>(null);
@@ -106,8 +109,14 @@ export default function Home() {
   const scrambleRef = useTextScramble(BAND_INFO.name);
 
   useEffect(() => {
-    songApi.getAll().then((res) => setSongs(res.data));
-    achievementApi.getAll().then((res) => setAchievements(res.data));
+    Promise.all([
+      songApi.getAll(),
+      achievementApi.getAll(),
+    ]).then(([songsRes, achievementsRes]) => {
+      setSongs(songsRes.data);
+      setAchievements(achievementsRes.data);
+      setDataReady(true);
+    });
   }, []);
 
   // Parallax on scroll
@@ -346,11 +355,21 @@ export default function Home() {
           />
         </filter>
       </svg>
+      {/* LOADING OVERLAY */}
+      <div className={`hero-loader ${isReady ? "hero-loader--done" : ""}`}>
+        <div className="hero-loader-content">
+          <h1 className="hero-loader-title">VELOCITY</h1>
+          <div className="hero-loader-bar">
+            <div className="hero-loader-progress" />
+          </div>
+          <span className="hero-loader-text">Loading</span>
+        </div>
+      </div>
       {/* HERO SECTION */}
       <section className="hero-section">
         <div className="hero-bg">
           <div className="hero-glitch-container">
-            <video ref={baseRef} className="hero-glitch__base" autoPlay loop muted playsInline>
+            <video ref={baseRef} className="hero-glitch__base" autoPlay loop muted playsInline onCanPlay={() => setVideoReady(true)}>
               <source src="/videos/hero.mp4" type="video/mp4" />
             </video>
             <video ref={redRef} className="hero-glitch__red" autoPlay loop muted playsInline>

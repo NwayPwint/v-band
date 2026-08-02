@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import GalleryLightbox from "../../components/GalleryLightbox";
 import SocialIcon from "../../components/SocialIcon";
 import { interviewApi, Interview } from "../../services/api";
+import { SkeletonSection } from "../../components/Skeleton";
 
 function getYTThumbnail(url: string): string {
   const match = url.match(
@@ -251,65 +252,121 @@ export default function Members() {
     name: string;
   } | null>(null);
   const [interviews, setInterviews] = useState<Interview[]>([]);
+  const [interviewsLoading, setInterviewsLoading] = useState(true);
 
   useEffect(() => {
-    interviewApi.getAll().then((res) => setInterviews(res.data));
+    interviewApi.getAll().then((res) => {
+      setInterviews(res.data);
+      setInterviewsLoading(false);
+    });
   }, []);
 
   const noiseRef = useRef<HTMLDivElement>(null);
+  const redRef = useRef<HTMLDivElement>(null);
+  const blueRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const N = () => noiseRef.current;
+    const R = () => redRef.current;
+    const B = () => blueRef.current;
 
-    const apply = (n?: Partial<CSSStyleDeclaration>) => {
+    const applyNoise = (n?: Partial<CSSStyleDeclaration>) => {
       if (N()) Object.assign(N()!.style, n ?? {});
     };
 
-    const effects = [
-      () => apply({ opacity: "0.15" }),
-      () => apply({ opacity: "0.2" }),
-      () => apply({ opacity: "0.1" }),
-      () => apply({ opacity: "0.3" }),
-      () => apply({ opacity: "0" }),
+    const applyGlitch = (
+      r?: Partial<CSSStyleDeclaration>,
+      b?: Partial<CSSStyleDeclaration>,
+    ) => {
+      if (R()) Object.assign(R()!.style, r ?? {});
+      if (B()) Object.assign(B()!.style, b ?? {});
+    };
+
+    const noiseEffects = [
+      () => applyNoise({ opacity: "0.15" }),
+      () => applyNoise({ opacity: "0.2" }),
+      () => applyNoise({ opacity: "0.1" }),
+      () => applyNoise({ opacity: "0.3" }),
+      () => applyNoise({ opacity: "0" }),
+    ];
+
+    const glitchEffects = [
+      () =>
+        applyGlitch(
+          { opacity: "0.5", transform: "translate(14px, 0)", clipPath: "inset(0 0 0 0)" },
+          { opacity: "0.4", transform: "translate(-12px, 0)", clipPath: "inset(0 0 0 0)" },
+        ),
+      () =>
+        applyGlitch(
+          { opacity: "0.6", transform: "translate(20px, 2px)", clipPath: "inset(15% 0 35% 0)" },
+          { opacity: "0.5", transform: "translate(-16px, -1px)", clipPath: "inset(55% 0 10% 0)" },
+        ),
+      () =>
+        applyGlitch(
+          { opacity: "0.45", transform: "translate(8px, -3px)", clipPath: "inset(30% 0 25% 0)" },
+          { opacity: "0.55", transform: "translate(-6px, 2px)", clipPath: "inset(5% 0 65% 0)" },
+        ),
+      () =>
+        applyGlitch(
+          { opacity: "0.7", transform: "translate(24px, 0)", clipPath: "inset(5% 0 70% 0)" },
+          { opacity: "0.6", transform: "translate(-20px, 0)", clipPath: "inset(60% 0 5% 0)" },
+        ),
+      () =>
+        applyGlitch(
+          { opacity: "0.4", transform: "translate(10px, -2px)", clipPath: "inset(25% 0 45% 0)" },
+          { opacity: "0.5", transform: "translate(-8px, 3px)", clipPath: "inset(40% 0 30% 0)" },
+        ),
+      () =>
+        applyGlitch(
+          { opacity: "0.7", transform: "translate(28px, 0)", clipPath: "inset(0 0 50% 0)" },
+          { opacity: "0.6", transform: "translate(-22px, 0)", clipPath: "inset(50% 0 0 0)" },
+        ),
     ];
 
     let timer: ReturnType<typeof setTimeout>;
     const schedule = () => {
       timer = setTimeout(
         () => {
-          const burst = 60 + Math.random() * 200;
-          const isStutter = Math.random() < 0.25;
-          effects[Math.floor(Math.random() * effects.length)]();
+          const burst = 40 + Math.random() * 150;
+          const isStutter = Math.random() < 0.4;
+
+          noiseEffects[Math.floor(Math.random() * noiseEffects.length)]();
+          glitchEffects[Math.floor(Math.random() * glitchEffects.length)]();
+
           setTimeout(() => {
-            apply({ opacity: "0" });
+            applyNoise({ opacity: "0" });
+            applyGlitch({ opacity: "0" }, { opacity: "0" });
             if (isStutter) {
               setTimeout(
                 () => {
-                  effects[Math.floor(Math.random() * effects.length)]();
+                  noiseEffects[Math.floor(Math.random() * noiseEffects.length)]();
+                  glitchEffects[Math.floor(Math.random() * glitchEffects.length)]();
                   setTimeout(
                     () => {
-                      apply({ opacity: "0" });
+                      applyNoise({ opacity: "0" });
+                      applyGlitch({ opacity: "0" }, { opacity: "0" });
                       schedule();
                     },
-                    40 + Math.random() * 100,
+                    30 + Math.random() * 60,
                   );
                 },
-                30 + Math.random() * 60,
+                20 + Math.random() * 40,
               );
             } else {
               schedule();
             }
           }, burst);
         },
-        500 + Math.random() * 1500,
+        300 + Math.random() * 1000,
       );
     };
     schedule();
     return () => {
       clearTimeout(timer);
-      apply({ opacity: "0" });
+      applyNoise({ opacity: "0" });
+      applyGlitch({ opacity: "0" }, { opacity: "0" });
     };
   }, []);
 
@@ -391,6 +448,8 @@ export default function Members() {
       <section ref={heroRef} className="page-hero">
         <div className="hero-bg">
           <div className="hero-glitch-container">
+            <div ref={redRef} className="page-hero-glitch page-hero-glitch--red" />
+            <div ref={blueRef} className="page-hero-glitch page-hero-glitch--blue" />
             <div ref={noiseRef} className="hero-glitch__noise" />
           </div>
           <canvas ref={canvasRef} className="hero-thunder" />
@@ -480,7 +539,9 @@ export default function Members() {
           <span className="section-label">Press</span>
           <h2 className="section-title">Interviews</h2>
         </div>
-        {interviews.length === 0 ? (
+        {interviewsLoading ? (
+          <SkeletonSection type="album-grid" count={4} />
+        ) : interviews.length === 0 ? (
           <div className="section-container">
             <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
               No interviews added yet.

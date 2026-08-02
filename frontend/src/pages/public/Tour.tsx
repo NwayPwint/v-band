@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { eventApi, Event } from "../../services/api";
+import { SkeletonSection } from "../../components/Skeleton";
 
 export default function Tour() {
   const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    eventApi.getAll().then((res) => setEvents(res.data));
+    eventApi.getAll().then((res) => {
+      setEvents(res.data);
+      setLoading(false);
+    });
   }, []);
 
   const formatDate = (dateStr: string) => {
@@ -33,72 +38,83 @@ export default function Tour() {
 
   return (
     <>
-      <section className="section">
-        <div className="section-container">
-          <span className="section-label">Upcoming</span>
-          <h2 className="section-title">Upcoming Shows</h2>
-          <div className="tour-list">
-            {upcomingEvents.map((event) => {
-              const date = formatDate(event.event_date);
-              return (
-                <div className="tour-item" key={event.id}>
-                  <div className="tour-date">
-                    <span className="tour-day">{date.day}</span>
-                    <span className="tour-month">{date.month}</span>
-                  </div>
-                  <div className="tour-details">
-                    <h3>{event.title}</h3>
-                    <p>{event.venue}</p>
-                  </div>
-                  <div className="tour-action">
-                    {event.ticket_url ? (
-                      <a href={event.ticket_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary">Buy Tickets</a>
-                    ) : (
-                      <span className="tour-soon">Coming Soon</span>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          {upcomingEvents.length === 0 && (
-            <p className="empty-message">No upcoming shows. Check back soon!</p>
-          )}
-        </div>
-      </section>
+      {loading && (
+        <>
+          <SkeletonSection type="list" count={4} />
+          <SkeletonSection type="list" count={3} />
+        </>
+      )}
 
-      <section className="section section-dark">
-        <div className="section-container">
-          <span className="section-label">Past Performances</span>
-          <h2 className="section-title">Performance History</h2>
-          <div className="past-tour-list">
-            {pastEvents.map((event) => (
-              <div className="past-tour-item" key={event.id}>
-                {event.image && (
-                  <div className="past-tour-image">
-                    <img src={event.image} alt={event.title} />
-                  </div>
-                )}
-                <div className="past-tour-content">
-                  <div className="past-tour-header">
-                    <span className="past-tour-type">{event.event_type}</span>
-                    <span className="past-tour-date">{formatDisplayDate(event.event_date)}</span>
-                  </div>
-                  <h3 className="past-tour-title">{event.title}</h3>
-                  <p className="past-tour-venue">{event.venue}</p>
-                  {event.notes && <p className="past-tour-notes">{event.notes}</p>}
-                  {event.link && (
-                    <a href={event.link} target="_blank" rel="noopener noreferrer" className="past-tour-link">View Details &rarr;</a>
-                  )}
-                </div>
+      {!loading && (
+        <>
+          <section className="section">
+            <div className="section-container">
+              <span className="section-label">Upcoming</span>
+              <h2 className="section-title">Upcoming Shows</h2>
+              <div className="tour-list">
+                {upcomingEvents.map((event) => {
+                  const date = formatDate(event.event_date);
+                  return (
+                    <div className="tour-item" key={event.id}>
+                      <div className="tour-date">
+                        <span className="tour-day">{date.day}</span>
+                        <span className="tour-month">{date.month}</span>
+                      </div>
+                      <div className="tour-details">
+                        <h3>{event.title}</h3>
+                        <p>{event.venue}</p>
+                      </div>
+                      <div className="tour-action">
+                        {event.ticket_url ? (
+                          <a href={event.ticket_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary">Buy Tickets</a>
+                        ) : (
+                          <span className="tour-soon">Coming Soon</span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            ))}
-          </div>
-          {pastEvents.length === 0 && (
-            <p className="empty-message">No past performances yet.</p>
-          )}
-        </div>
-      </section>
+              {upcomingEvents.length === 0 && (
+                <p className="empty-message">No upcoming shows. Check back soon!</p>
+              )}
+            </div>
+          </section>
+
+          <section className="section section-dark">
+            <div className="section-container">
+              <span className="section-label">Past Performances</span>
+              <h2 className="section-title">Performance History</h2>
+              <div className="past-tour-list">
+                {pastEvents.map((event) => (
+                  <div className="past-tour-item" key={event.id}>
+                    {event.image && (
+                      <div className="past-tour-image">
+                        <img src={event.image} alt={event.title} />
+                      </div>
+                    )}
+                    <div className="past-tour-content">
+                      <div className="past-tour-header">
+                        <span className="past-tour-type">{event.event_type}</span>
+                        <span className="past-tour-date">{formatDisplayDate(event.event_date)}</span>
+                      </div>
+                      <h3 className="past-tour-title">{event.title}</h3>
+                      <p className="past-tour-venue">{event.venue}</p>
+                      {event.notes && <p className="past-tour-notes">{event.notes}</p>}
+                      {event.link && (
+                        <a href={event.link} target="_blank" rel="noopener noreferrer" className="past-tour-link">View Details &rarr;</a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {pastEvents.length === 0 && (
+                <p className="empty-message">No past performances yet.</p>
+              )}
+            </div>
+          </section>
+        </>
+      )}
     </>
   );
 }

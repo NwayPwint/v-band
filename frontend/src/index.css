@@ -703,8 +703,8 @@ tr:hover td {
 
 .mobile-nav-close {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
+  top: 12px;
+  right: 1rem;
   background: none;
   border: none;
   color: var(--text-primary);
@@ -894,6 +894,7 @@ tr:hover td {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .hero-glitch-container::before {
@@ -1167,10 +1168,10 @@ tr:hover td {
 .hero-sound-toggle {
   position: absolute;
   bottom: 2.5rem;
-  right: 2.5rem;
+  right: 1rem;
   z-index: 4;
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1180,14 +1181,14 @@ tr:hover td {
   cursor: pointer;
   backdrop-filter: blur(10px);
   clip-path: polygon(
-    6px 0,
-    calc(100% - 6px) 0,
-    100% 6px,
-    100% calc(100% - 6px),
-    calc(100% - 6px) 100%,
-    6px 100%,
-    0 calc(100% - 6px),
-    0 6px
+    4px 0,
+    calc(100% - 4px) 0,
+    100% 4px,
+    100% calc(100% - 4px),
+    calc(100% - 4px) 100%,
+    4px 100%,
+    0 calc(100% - 4px),
+    0 4px
   );
   transition: all 0.3s ease;
 }
@@ -1199,8 +1200,8 @@ tr:hover td {
 }
 
 .hero-sound-toggle svg {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 /* ========================
@@ -2559,6 +2560,15 @@ tr:hover td {
     font-size: 0.9rem;
   }
 
+  .hero-actions {
+    margin-top: 3rem;
+  }
+
+  .hero-actions .btn-lg {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.75rem;
+  }
+
   .section-title {
     font-size: 1.6rem;
   }
@@ -2713,6 +2723,7 @@ tr:hover td {
   background-position: center 30%;
   background-repeat: no-repeat;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .page-hero::before {
@@ -2761,6 +2772,31 @@ tr:hover td {
   height: 100%;
   z-index: 5;
   pointer-events: none;
+}
+
+.page-hero-glitch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/images/band/hero.png");
+  background-size: cover;
+  background-position: center 30%;
+  background-repeat: no-repeat;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0s;
+}
+
+.page-hero-glitch--red {
+  background-blend-mode: multiply;
+  filter: hue-rotate(-30deg) saturate(3) brightness(0.6);
+}
+
+.page-hero-glitch--blue {
+  background-blend-mode: multiply;
+  filter: hue-rotate(180deg) saturate(3) brightness(0.6);
 }
 
 .page-hero-title {
@@ -3698,4 +3734,164 @@ tr:hover td {
   50% { text-shadow: 0 0 10px var(--accent-cyan), 0 0 30px var(--accent-cyan); }
   75% { text-shadow: 0 0 15px var(--accent), 0 0 35px var(--accent); }
   100% { text-shadow: 0 0 30px rgba(255, 0, 64, 0.15); }
+}
+
+/* ========================
+   LOADING OVERLAY
+   ======================== */
+
+.hero-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.hero-loader--done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hero-loader-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.hero-loader-title {
+  font-family: "Press Start 2P", cursive;
+  font-size: 3rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 768px) {
+  .hero-loader-title {
+    font-size: 1.5rem;
+  }
+}
+
+.hero-loader-bar {
+  width: 200px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.hero-loader-progress {
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  animation: loaderPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loaderPulse {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
+}
+
+.hero-loader-text {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+/* ========================
+   SKELETON LOADERS
+   ======================== */
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #0f0f1a 25%, #1a1a2e 50%, #0f0f1a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-text {
+  height: 1rem;
+  border-radius: 2px;
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+}
+
+.skeleton-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 3rem;
+}
+
+.skeleton-card {
+  background: linear-gradient(180deg, #0f0f1a 0%, #0a0a12 100%);
+  border: 2px solid #1a1a30;
+  overflow: hidden;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    0 100%
+  );
+}
+
+.skeleton-card-image {
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.skeleton-card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skeleton-member-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.skeleton-tour-row {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(26, 26, 48, 0.5);
+}
+
+.skeleton-tour-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 80px;
+}
+
+.skeleton-tour-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
