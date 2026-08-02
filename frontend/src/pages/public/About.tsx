@@ -11,7 +11,6 @@ const QUICK_FACTS = [
 export default function About() {
   return (
     <>
-
       {/* SECTION 1: HERO */}
       <section className="about-hero section-dark">
         <div className="section-container">
@@ -46,7 +45,7 @@ export default function About() {
           <div className="about-text-block">
             <p>
               Velocity exploded onto the mainstream landscape with their 2019
-              debut studio album, <strong>&ldquo;Way&rdquo;</strong>, which
+              debut studio album, <strong>&ldquo;Lan&rdquo;</strong>, which
               shattered expectations and ranked 10th on Myanmar&rsquo;s Top 10
               Best Seller Albums list. Known for balancing technical proficiency
               with raw emotional narratives, they became pioneers in the modern

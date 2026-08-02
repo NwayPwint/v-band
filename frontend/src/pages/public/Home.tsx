@@ -1,6 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { songApi, achievementApi, Song, Achievement } from "../../services/api";
+import useScrollReveal from "../../hooks/useScrollReveal";
+import useTilt from "../../hooks/useTilt";
+import useTextScramble from "../../hooks/useTextScramble";
 
 const BAND_INFO = {
   name: "VELOCITY",
@@ -49,19 +52,76 @@ const MEMBERS = [
   },
 ];
 
+function MemberCard({ member }: { member: typeof MEMBERS[0]; index: number }) {
+  const tiltRef = useTilt(12);
+  return (
+    <div
+      ref={tiltRef}
+      className="member-card-public tilt-card"
+    >
+      <div className="member-image-wrapper">
+        <img src={member.image} alt={member.name} />
+      </div>
+      <h3>{member.name}</h3>
+      <span className="member-role">{member.role}</span>
+    </div>
+  );
+}
+
+function AchievementCard({ item }: { item: Achievement; index: number }) {
+  const tiltRef = useTilt(10);
+  return (
+    <div
+      ref={tiltRef}
+      className="achievement-card tilt-card"
+    >
+      <div className="achievement-icon">{item.icon || "★"}</div>
+      <h3>{item.title}</h3>
+      <p>{item.description}</p>
+    </div>
+  );
+}
+
 export default function Home() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [isMuted, setIsMuted] = useState(true);
 
-  const redRef = useRef<HTMLImageElement>(null);
-  const blueRef = useRef<HTMLImageElement>(null);
+  const baseRef = useRef<HTMLVideoElement>(null);
+  const redRef = useRef<HTMLVideoElement>(null);
+  const blueRef = useRef<HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const noiseRef = useRef<HTMLDivElement>(null);
   const textRedRef = useRef<HTMLSpanElement>(null);
   const textBlueRef = useRef<HTMLSpanElement>(null);
 
+  const latestImageRef = useScrollReveal();
+  const latestContentRef = useScrollReveal();
+  const bandTitleRef = useScrollReveal();
+  const membersGridRef = useScrollReveal();
+  const achievementsTitleRef = useScrollReveal();
+  const achievementsGridRef = useScrollReveal();
+
+  const heroContentRef = useRef<HTMLDivElement>(null);
+  const scrambleRef = useTextScramble(BAND_INFO.name);
+
   useEffect(() => {
     songApi.getAll().then((res) => setSongs(res.data));
     achievementApi.getAll().then((res) => setAchievements(res.data));
+  }, []);
+
+  // Parallax on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const heroContent = heroContentRef.current;
+      if (heroContent && scrollY < window.innerHeight) {
+        heroContent.style.transform = `translateY(${scrollY * 0.4}px)`;
+        heroContent.style.opacity = `${1 - scrollY / (window.innerHeight * 0.8)}`;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -255,6 +315,18 @@ export default function Home() {
   const latestAlbum =
     albums.find((a) => a.is_latest) || albums[albums.length - 1];
 
+  const toggleMute = () => {
+    const newMuted = !isMuted;
+    setIsMuted(newMuted);
+    if (audioRef.current) {
+      if (newMuted) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+    }
+  };
+
   return (
     <>
       <svg style={{ position: "absolute", width: 0, height: 0 }}>
@@ -278,54 +350,26 @@ export default function Home() {
       <section className="hero-section">
         <div className="hero-bg">
           <div className="hero-glitch-container">
-            <picture>
-              <source
-                media="(max-width: 768px)"
-                srcSet="/images/band/hero4.png"
-              />
-              <img
-                className="hero-glitch__base"
-                src="/images/band/hero4.png"
-                alt="Velocity"
-              />
-            </picture>
-            <picture>
-              <source
-                media="(max-width: 768px)"
-                srcSet="/images/band/hero4.png"
-              />
-              <img
-                ref={redRef}
-                className="hero-glitch__red"
-                src="/images/band/hero4.png"
-                alt=""
-                aria-hidden="true"
-              />
-            </picture>
-            <picture>
-              <source
-                media="(max-width: 768px)"
-                srcSet="/images/band/hero4.png"
-              />
-              <img
-                ref={blueRef}
-                className="hero-glitch__blue"
-                src="/images/band/hero4.png"
-                alt=""
-                aria-hidden="true"
-              />
-            </picture>
+            <video ref={baseRef} className="hero-glitch__base" autoPlay loop muted playsInline>
+              <source src="/videos/hero.mp4" type="video/mp4" />
+            </video>
+            <video ref={redRef} className="hero-glitch__red" autoPlay loop muted playsInline>
+              <source src="/videos/hero.mp4" type="video/mp4" />
+            </video>
+            <video ref={blueRef} className="hero-glitch__blue" autoPlay loop muted playsInline>
+              <source src="/videos/hero.mp4" type="video/mp4" />
+            </video>
             <div ref={noiseRef} className="hero-glitch__noise" />
           </div>
         </div>
         <div className="hero-grain" />
         <div className="hero-speed-lines" />
-        <div className="hero-content">
+        <div className="hero-content" ref={heroContentRef}>
           <span className="btn btn-secondary btn-lg">
             Est. {BAND_INFO.formed}
           </span>
           <div className="hero-title-container">
-            <h1 className="hero-title">{BAND_INFO.name}</h1>
+            <h1 className="hero-title text-scramble" ref={scrambleRef}>{BAND_INFO.name}</h1>
             <span
               ref={textRedRef}
               className="hero-title-glitch hero-title-glitch--red"
@@ -361,19 +405,41 @@ export default function Home() {
             <polyline points="6 9 12 15 18 9" />
           </svg>
         </div>
+        <button
+          className="hero-sound-toggle"
+          onClick={toggleMute}
+          aria-label={isMuted ? "Unmute video" : "Mute video"}
+        >
+          {isMuted ? (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+              <line x1="23" y1="9" x2="17" y2="15" />
+              <line x1="17" y1="9" x2="23" y2="15" />
+            </svg>
+          ) : (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            </svg>
+          )}
+        </button>
       </section>
+      <audio ref={audioRef} loop>
+        <source src="/videos/background.mp3" type="audio/mpeg" />
+      </audio>
 
       {/* LATEST UPDATE */}
       <section className="latest-update">
         <div className="update-card">
-          <div className="update-image">
+          <div ref={latestImageRef} className="reveal update-image">
             <img
               src={latestAlbum?.cover_image || "/images/albums/placeholder.svg"}
               alt={latestAlbum?.title || "Latest Release"}
             />
             <span className="badge-out-now">New Album</span>
           </div>
-          <div className="update-content">
+          <div ref={latestContentRef} className="reveal reveal-delay-2 update-content">
             <span className="update-label">Latest Release</span>
             <h2>{latestAlbum?.title || "No releases yet"}</h2>
             <p className="update-date">
@@ -396,17 +462,13 @@ export default function Home() {
       {/* THE BAND */}
       <section className="section section-dark">
         <div className="section-container">
-          <span className="section-label">{BAND_INFO.genre}</span>
-          <h2 className="section-title">The Band</h2>
-          <div className="members-grid">
-            {MEMBERS.map((member) => (
-              <div className="member-card-public" key={member.id}>
-                <div className="member-image-wrapper">
-                  <img src={member.image} alt={member.name} />
-                </div>
-                <h3>{member.name}</h3>
-                <span className="member-role">{member.role}</span>
-              </div>
+          <div ref={bandTitleRef} className="reveal">
+            <span className="section-label">{BAND_INFO.genre}</span>
+            <h2 className="section-title">The Band</h2>
+          </div>
+          <div ref={membersGridRef} className="members-grid">
+            {MEMBERS.map((member, i) => (
+              <MemberCard key={member.id} member={member} index={i} />
             ))}
           </div>
         </div>
@@ -415,15 +477,13 @@ export default function Home() {
       {/* ACHIEVEMENTS */}
       <section className="section section-dark">
         <div className="section-container">
-          <span className="section-label">Recognition</span>
-          <h2 className="section-title">Achievements</h2>
-          <div className="achievements-grid">
-            {achievements.map((item) => (
-              <div className="achievement-card" key={item.id}>
-                <div className="achievement-icon">{item.icon || "★"}</div>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </div>
+          <div ref={achievementsTitleRef} className="reveal">
+            <span className="section-label">Recognition</span>
+            <h2 className="section-title">Achievements</h2>
+          </div>
+          <div ref={achievementsGridRef} className="achievements-grid">
+            {achievements.map((item, i) => (
+              <AchievementCard key={item.id} item={item} index={i} />
             ))}
           </div>
           {achievements.length === 0 && (

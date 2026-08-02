@@ -12,11 +12,7 @@ function getYTThumbnail(url: string): string {
     : "";
 }
 
-function drawLightning(
-  ctx: CanvasRenderingContext2D,
-  w: number,
-  h: number,
-) {
+function drawLightning(ctx: CanvasRenderingContext2D, w: number, h: number) {
   ctx.clearRect(0, 0, w, h);
 
   const startX = Math.random() * w;
@@ -27,7 +23,8 @@ function drawLightning(
   for (let i = 0; i <= segments; i++) {
     const t = i / segments;
     const y = t * h;
-    const xOff = i === 0 || i === segments ? 0 : (Math.random() - 0.5) * w * 0.45;
+    const xOff =
+      i === 0 || i === segments ? 0 : (Math.random() - 0.5) * w * 0.45;
     bolt.push({ x: startX + (endX - startX) * t + xOff, y });
   }
 
@@ -208,7 +205,7 @@ const MEMBERS = [
       "/images/members/pyaewa4.jpg",
     ],
     birthday: "October 6",
-    bio: "Pyae Wa is a prominent guitarist and a long-standing member of Velocity, playing a vital role in shaping the band's heavy sonic identity. He crafts the intricate riffs and melodic progressions that define Velocity's signature modern metal sound. Beyond Velocity, Pyae Wa is the frontman of Break The Curse — a Myanmar metal band playing Metal-core, Industrial Metal, Nu-Metal, Electronic Metal, Heavy Metal and Modern Rock.",
+    bio: "Pyae Wa is a prominent guitarist and a long-standing member of Velocity, playing a vital role in shaping the band's heavy sonic identity. He crafts the intricate riffs and melodic progressions that define Velocity's signature modern metal sound. Beyond Velocity, Pyae Wa is also a member of Break The Curse — a Myanmar metal band playing Metal-core, Industrial Metal, Nu-Metal, Electronic Metal, Heavy Metal and Modern Rock.",
     socials: [
       {
         platform: "Facebook",
@@ -322,8 +319,14 @@ export default function Members() {
     const N = () => noiseRef.current;
 
     const positions = [
-      "0% 25%", "15% 28%", "30% 22%", "50% 30%",
-      "65% 26%", "80% 32%", "95% 28%", "100% 30%",
+      "0% 25%",
+      "15% 28%",
+      "30% 22%",
+      "50% 30%",
+      "65% 26%",
+      "80% 32%",
+      "95% 28%",
+      "100% 30%",
     ];
 
     function flash() {
@@ -334,31 +337,42 @@ export default function Members() {
       c.width = c.clientWidth;
       c.height = c.clientHeight;
       drawLightning(ctx, c.width, c.height);
-      setTimeout(() => ctx.clearRect(0, 0, c.width, c.height), 80 + Math.random() * 80);
+      setTimeout(
+        () => ctx.clearRect(0, 0, c.width, c.height),
+        80 + Math.random() * 80,
+      );
     }
 
     let timer: ReturnType<typeof setTimeout>;
     const schedule = () => {
-      timer = setTimeout(() => {
-        const pos = positions[Math.floor(Math.random() * positions.length)];
-        const isStutter = Math.random() < 0.3;
+      timer = setTimeout(
+        () => {
+          const pos = positions[Math.floor(Math.random() * positions.length)];
+          const isStutter = Math.random() < 0.3;
 
-        if (H()) H()!.style.backgroundPosition = pos;
-        flash();
-        if (N()) N()!.style.opacity = (0.1 + Math.random() * 0.25).toString();
+          if (H()) H()!.style.backgroundPosition = pos;
+          flash();
+          if (N()) N()!.style.opacity = (0.1 + Math.random() * 0.25).toString();
 
-        if (isStutter) {
-          setTimeout(() => {
-            const pos2 = positions[Math.floor(Math.random() * positions.length)];
-            if (H()) H()!.style.backgroundPosition = pos2;
-            flash();
-            if (N()) N()!.style.opacity = (0.15 + Math.random() * 0.3).toString();
-            setTimeout(() => schedule(), 200 + Math.random() * 300);
-          }, 120 + Math.random() * 200);
-        } else {
-          schedule();
-        }
-      }, 1500 + Math.random() * 3500);
+          if (isStutter) {
+            setTimeout(
+              () => {
+                const pos2 =
+                  positions[Math.floor(Math.random() * positions.length)];
+                if (H()) H()!.style.backgroundPosition = pos2;
+                flash();
+                if (N())
+                  N()!.style.opacity = (0.15 + Math.random() * 0.3).toString();
+                setTimeout(() => schedule(), 200 + Math.random() * 300);
+              },
+              120 + Math.random() * 200,
+            );
+          } else {
+            schedule();
+          }
+        },
+        1500 + Math.random() * 3500,
+      );
     };
     schedule();
     return () => clearTimeout(timer);
